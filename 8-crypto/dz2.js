@@ -1,22 +1,39 @@
+
 function encryptPassword(password) {
-    if (!password) {
-        return "";
-    }      
-    let mid = Math.floor(password.length / 2);
-    let encryptedPassword = password.substring(mid) + password.substring(0, mid);
-    return encryptedPassword;
+    const passwordArray = password.split('');
+    const mid = Math.floor(passwordArray.length / 2);
+    
+    for (let i = 0; i < mid; i++) {
+        const temp = passwordArray[i];
+        passwordArray[i] = passwordArray[mid + i];
+        passwordArray[mid + i] = temp;
+    }
+
+    return passwordArray.join('');
 }
 
-function checkPassword(encryptedPassword, originalPassword) {  
+function checkPassword(encryptedPassword, originalPassword) {
     if (!encryptedPassword || !originalPassword) {
         return false;
     }
-    let mid = Math.floor(encryptedPassword.length / 2);
-    let decryptedPassword = encryptedPassword.substring(mid) + encryptedPassword.substring(0, mid);   
-    return decryptedPassword === originalPassword;
+
+    function crypt(password) {
+        const passwordArray = password.split('');
+        const mid = Math.floor(passwordArray.length / 2);
+        for (let i = 0; i < mid; i++) {
+            const temp = passwordArray[i];
+            passwordArray[i] = passwordArray[mid + i];
+            passwordArray[mid + i] = temp;
+        }
+        return passwordArray.join('');
+    }
+
+    return originalPassword === crypt(encryptedPassword);
 }
 
-let password = "example123";
-let encrypted = encryptPassword(password);
-console.log("Зашифрованный пароль:", encrypted);
-console.log("Проверка пароля:", checkPassword(encrypted, password));
+const password = "password";
+const encryptedPassword = encryptPassword(password);
+console.log("Зашифрованный пароль:", encryptedPassword);
+
+const isPasswordCorrect = checkPassword(encryptedPassword, password);
+console.log("Пароль верный?", isPasswordCorrect);
