@@ -19,6 +19,5 @@ function validateCreditCard(cardNumber) {
 
     return sum % 10 === 0;
 }
-
 const cardNumber = "4561-1213-4367-2612";
 console.log(validateCreditCard(cardNumber));
